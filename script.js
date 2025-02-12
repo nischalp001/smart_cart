@@ -6,7 +6,7 @@ const checkoutContainer = document.getElementById("checkout-container");
 
 const prices = {
     "Coke": 100,
-    "wai wai": 20,
+    "Wai Wai": 20,
     "Dettol": 25,
     "Ariel": 150
 };

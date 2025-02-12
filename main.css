@@ -1,0 +1,138 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #90a4ae; /* Updated background color */
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #90a4ae;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 80%;
+    height: 80%;
+    box-sizing: border-box;
+}
+.video-section {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Set position relative to place the canvas in front */
+}
+.video {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    position: absolute; /* Keep the video fixed */
+    z-index: 0; /* Video stays behind the canvas */
+}
+canvas {
+    position: absolute; /* Position the canvas over the video */
+    top: 0;
+    left: 0;
+    z-index: 1; /* Ensure canvas is above the video */
+}
+.cart-section {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.cart-title {
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+.cart-items {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f7f7f7;
+    border-radius: 50px;
+    padding: 20px;
+    overflow-y: auto;
+}
+.cart-item {
+    background-color: #bbdefb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.checkout-button {
+    background-color: #384959; /* Checkout button color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+}
+.checkout-button:hover {
+    background-color: #3a535f;
+}
+.checkout-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Black background with transparency */
+    padding-top: 100px;
+}
+
+.checkout-modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    text-align: center;
+}
+
+.close-button {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#proceedToPaymentButton {
+    background-color: #37474f;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    margin-top: 20px;
+}
+#paymentImage img {
+    width: auto;
+    height: 80%; /* You can adjust the size of the image here */
+    filter: brightness(100%);
+}

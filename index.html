@@ -4,69 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Cart</title>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        h1 {
-            color: #4e6e3a;
-            margin-top: 20px;
-        }
-        #video {
-            width: 25%;
-            margin: 20px auto;
-            background-color: lightgreen;
-        }
-        #cart {
-            margin-top: 20px;
-        }
-        #checkout-container {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background: #7a9e7e;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #5e7b5e;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #f2f2f2;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        #total-price {
-            font-weight: bold;
-            color: #2e8b57;
-        }
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-
-    <h1>Smart Cart</h1>
-
-    <!-- Video Container -->
-    <div>
-        <video id="video" autoplay></video>
+    <div class="container">
+        <div class="video-section">
+            <video id="video" autoplay muted></video>
+        </div>
+        <div class="cart-section">
+            <div class="cart-title">Smart Cart</div>
+            <div class="cart-items" id="detections">
+                <!-- Dynamically filled with detected items -->
+            </div>
+            <div class="checkout-button" id="checkoutButton">Check Out</div>
+        </div>
     </div>
 
-    <!-- Cart and Checkout section -->
-    <ul id="cart-list"></ul>
-    <h3>Total: Rs. <span id="total-price">0</span></h3>
-    <button id="checkout">Check Out</button>
-    <div id="checkout-container"></div>
-
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.0/async.min.js" integrity="sha512-6K6+H87tLdCWvY5ml9ZQXLRlPlDEt8uXmtELhuJRgFyEDv6JvndWHg3jadJuBVGPEhhA2AAt+ROMC2V7EvTIWw==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/inferencejs"></script>
+    <script src="main.js"></script>
 </body>
 </html>

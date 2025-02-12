@@ -17,18 +17,18 @@ let previousDetections = {}; // Track previously detected objects by their uniqu
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 
-// Append canvas after the video element to overlay on top
+// Append the canvas on top of the video for bounding box drawing
 video.parentNode.appendChild(canvas);
-canvas.style.position = 'absolute'; // Ensure it's on top of the video
+canvas.style.position = 'absolute';
 canvas.style.top = '0';
 canvas.style.left = '0';
 
 async function detectObjects() {
-    // Ensure canvas size matches video size
+    // Adjust the canvas size to match the video feed
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    // Draw the current frame from the video
+    // Draw the current frame from the video to the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const imageBase64 = canvas.toDataURL("image/jpeg").split(",")[1];
@@ -64,6 +64,7 @@ function updateCart(detectedObjects) {
         }
     });
 
+    // Remove items from the cart if they're no longer detected
     Object.keys(previousDetections).forEach(objKey => {
         if (!currentDetections[objKey]) {
             cart = cart.filter(item => `${item.name}_${item.x}_${item.y}` !== objKey);

@@ -6,11 +6,11 @@
     <title>Smart Cart</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        /* CSS to make the page visually appealing and ensure proper alignment */
+        /* General body styling */
         body {
             text-align: center;
             font-family: Arial, sans-serif;
-            background-color: #b0c4b1;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
         }
@@ -20,16 +20,23 @@
             margin-top: 20px;
         }
 
-        /* Video styling */
-        #video {
+        /* Labeling for the video */
+        #video-container {
             position: relative;
-            width: 80%;
-            background: lightgreen;
+            width: 25%;
             margin: 0 auto;
             display: block;
+            border: 2px solid #4e6e3a;
+            background-color: lightgray;
+            margin-bottom: 20px;
         }
 
-        /* The canvas will overlay on top of the video */
+        #video {
+            width: 100%;
+            background: lightgreen;
+        }
+
+        /* Styling for bounding box canvas */
         canvas {
             position: absolute;
             top: 0;
@@ -37,6 +44,7 @@
             z-index: 10;
         }
 
+        /* Cart and checkout section */
         #cart {
             margin-top: 20px;
         }
@@ -58,6 +66,7 @@
             background: #5e7b5e;
         }
 
+        /* List styling */
         ul {
             list-style-type: none;
             padding: 0;
@@ -79,8 +88,14 @@
 <body>
 
     <h1>Smart Cart</h1>
-    <video id="video" autoplay></video>
 
+    <!-- Video container with label -->
+    <div id="video-container">
+        <h3>Live Video Feed</h3>
+        <video id="video" autoplay></video>
+    </div>
+
+    <!-- Cart section -->
     <ul id="cart-list"></ul>
     <h3>Total: Rs. <span id="total-price">0</span></h3>
     <button id="checkout">Check Out</button>

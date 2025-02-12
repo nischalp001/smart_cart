@@ -83,19 +83,24 @@ function renderCart() {
 }
 
 function drawDetections(detectedObjects) {
+    // Redraw the frame from the video feed
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     detectedObjects.predictions.forEach(item => {
         if (item.confidence >= 0.8) {
+            // Draw bounding box
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.strokeRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
+
+            // Add label text
             ctx.fillStyle = "red";
             ctx.font = "16px Arial";
             ctx.fillText(`${item.class} (${(item.confidence * 100).toFixed(1)}%)`, item.x - item.width / 2, item.y - item.height / 2 - 5);
         }
     });
 
+    // Ensure the canvas is shown on top of the video element
     video.parentNode.appendChild(canvas);
 }
 

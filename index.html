@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cart</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; background-color: #b0c4b1; }
+        #video { width: 50%; background: lightgreen; }
+        #cart { margin-top: 20px; }
+        #checkout-container { margin-top: 20px; }
+        button { padding: 10px 20px; background: #7a9e7e; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Smart Cart</h1>
+    <video id="video" autoplay></video>
+    <ul id="cart-list"></ul>
+    <h3>Total: <span id="total-price">Rs. 0</span></h3>
+    <button id="checkout">Check Out</button>
+    <div id="checkout-container"></div>
+    <script src="script.js"></script>
+</body>
+</html>
+    

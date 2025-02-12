@@ -45,7 +45,7 @@ function updateCart(detectedObjects) {
 
     // Only add detected objects to the cart if they are new or not removed from the frame
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.8 && prices[item.class]) {
+        if (item.confidence >= 0.6 && prices[item.class]) {
             const objKey = `${item.class}_${Math.round(item.x)}_${Math.round(item.y)}`;
             currentDetections[objKey] = true; // Mark this object as currently detected
 
@@ -85,7 +85,7 @@ function drawDetections(detectedObjects) {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.8) {
+        if (item.confidence >= 0.6) {
             // Draw bounding box
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;

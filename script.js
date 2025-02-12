@@ -43,28 +43,24 @@ async function detectObjects() {
 function updateCart(detectedObjects) {
     const currentDetections = {}; // Temporary object to store currently detected objects
 
-    // Only add detected objects to the cart if they are new or not removed from the frame
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.6 && prices[item.class]) {
+        if (item.confidence >= 0.8 && prices[item.class]) {
             const objKey = `${item.class}_${Math.round(item.x)}_${Math.round(item.y)}`;
-            currentDetections[objKey] = true; // Mark this object as currently detected
+            currentDetections[objKey] = true;
 
-            // If this object wasn't previously detected, add it to the cart
+            // Add item to cart if it's detected for the first time
             if (!previousDetections[objKey]) {
                 cart.push({ name: item.class, price: prices[item.class] });
             }
         }
     });
 
-    // Remove objects from cart if they are no longer detected
     Object.keys(previousDetections).forEach(objKey => {
         if (!currentDetections[objKey]) {
-            // Remove object from cart if it's not detected anymore
             cart = cart.filter(item => `${item.name}_${item.x}_${item.y}` !== objKey);
         }
     });
 
-    // Update previous detections to the current detections
     previousDetections = currentDetections;
 
     renderCart();
@@ -81,24 +77,22 @@ function renderCart() {
 }
 
 function drawDetections(detectedObjects) {
-    // Redraw the frame from the video feed
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.6) {
+        if (item.confidence >= 0.8) {
             // Draw bounding box
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.strokeRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
 
-            // Add label text
+            // Add label with confidence percentage
             ctx.fillStyle = "red";
             ctx.font = "16px Arial";
             ctx.fillText(`${item.class} (${(item.confidence * 100).toFixed(1)}%)`, item.x - item.width / 2, item.y - item.height / 2 - 5);
         }
     });
 
-    // Ensure the canvas is shown on top of the video element
     video.parentNode.appendChild(canvas);
 }
 

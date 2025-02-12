@@ -11,6 +11,7 @@ const prices = {
 };
 
 let cart = [];
+let detectedObjectsCache = {}; // Object to keep track of previously detected objects
 
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
@@ -41,8 +42,12 @@ async function detectObjects() {
 function updateCart(detectedObjects) {
     cart = [];
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.8 && prices[item.class]) { // Filter by confidence threshold
-            cart.push({ name: item.class, price: prices[item.class] });
+        if (item.confidence >= 0.8 && prices[item.class]) {
+            const objKey = `${item.class}_${Math.round(item.x)}_${Math.round(item.y)}`;
+            if (!detectedObjectsCache[objKey]) {
+                cart.push({ name: item.class, price: prices[item.class] });
+                detectedObjectsCache[objKey] = true; // Mark this object as detected
+            }
         }
     });
     renderCart();
@@ -62,7 +67,7 @@ function drawDetections(detectedObjects) {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     detectedObjects.predictions.forEach(item => {
-        if (item.confidence >= 0.8) { // Only label objects with confidence ≥ 0.8
+        if (item.confidence >= 0.8) {
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.strokeRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
@@ -72,7 +77,6 @@ function drawDetections(detectedObjects) {
         }
     });
 
-    // Display the updated canvas on top of the video
     video.parentNode.appendChild(canvas);
 }
 
@@ -85,5 +89,5 @@ navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     video.srcObject = stream;
 });
 
-// Run detection every 3 seconds
-setInterval(detectObjects, 3000);
+// Run detection at a reduced interval (e.g., every 5 seconds) to avoid overloading the system.
+setInterval(detectObjects, 5000);

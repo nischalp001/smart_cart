@@ -11,7 +11,7 @@ const prices = {
 };
 
 let cart = [];
-let detectedObjectsCache = {}; // Object to keep track of previously detected objects
+let previousDetections = {}; // Track previously detected objects by their unique key
 
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
@@ -40,16 +40,35 @@ async function detectObjects() {
 }
 
 function updateCart(detectedObjects) {
+    const currentDetections = {}; // Temporary object to store currently detected objects
+
+    // Reset cart every 5 seconds
     cart = [];
+
+    // Loop through all detected objects
     detectedObjects.predictions.forEach(item => {
         if (item.confidence >= 0.8 && prices[item.class]) {
             const objKey = `${item.class}_${Math.round(item.x)}_${Math.round(item.y)}`;
-            if (!detectedObjectsCache[objKey]) {
+            currentDetections[objKey] = true; // Mark this object as currently detected
+
+            // If this object wasn't previously detected, add it to the cart
+            if (!previousDetections[objKey]) {
                 cart.push({ name: item.class, price: prices[item.class] });
-                detectedObjectsCache[objKey] = true; // Mark this object as detected
             }
         }
     });
+
+    // Remove objects from cart if they are no longer detected
+    Object.keys(previousDetections).forEach(objKey => {
+        if (!currentDetections[objKey]) {
+            // Remove object from cart if it's not detected anymore
+            cart = cart.filter(item => `${item.name}_${item.x}_${item.y}` !== objKey);
+        }
+    });
+
+    // Update previous detections to the current detections
+    previousDetections = currentDetections;
+
     renderCart();
 }
 
@@ -89,5 +108,5 @@ navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     video.srcObject = stream;
 });
 
-// Run detection at a reduced interval (e.g., every 5 seconds) to avoid overloading the system.
+// Run detection every 5 seconds
 setInterval(detectObjects, 5000);

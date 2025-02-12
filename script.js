@@ -1,4 +1,3 @@
-// Include Interface.js (ensure it's linked in your HTML file)
 const video = document.getElementById("video");
 const cartList = document.getElementById("cart-list");
 const totalPrice = document.getElementById("total-price");
@@ -13,11 +12,12 @@ const prices = {
 
 let cart = [];
 
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+
 async function detectObjects() {
-    const canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const imageBase64 = canvas.toDataURL("image/jpeg").split(",")[1];
@@ -30,7 +30,9 @@ async function detectObjects() {
             data: imageBase64,
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
         });
+
         updateCart(response.data);
+        drawDetections(response.data);
     } catch (error) {
         console.error("Error detecting objects:", error.message);
     }
@@ -39,7 +41,7 @@ async function detectObjects() {
 function updateCart(detectedObjects) {
     cart = [];
     detectedObjects.predictions.forEach(item => {
-        if (prices[item.class]) {
+        if (item.confidence >= 0.8 && prices[item.class]) { // Filter by confidence threshold
             cart.push({ name: item.class, price: prices[item.class] });
         }
     });
@@ -56,9 +58,28 @@ function renderCart() {
     totalPrice.innerText = `Rs. ${total}`;
 }
 
+function drawDetections(detectedObjects) {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    detectedObjects.predictions.forEach(item => {
+        if (item.confidence >= 0.8) { // Only label objects with confidence ≥ 0.8
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
+            ctx.fillStyle = "red";
+            ctx.font = "16px Arial";
+            ctx.fillText(`${item.class} (${(item.confidence * 100).toFixed(1)}%)`, item.x - item.width / 2, item.y - item.height / 2 - 5);
+        }
+    });
+
+    // Display the updated canvas on top of the video
+    video.parentNode.appendChild(canvas);
+}
+
 checkoutBtn.addEventListener("click", () => {
     checkoutContainer.innerHTML = `<h3>Total: Rs. ${totalPrice.innerText}</h3><p>Pay via QR:</p><img src="My_Gallery.png" alt="QR Code" style="width: 150px; height: auto;">`;
 });
+
 // Start video feed
 navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     video.srcObject = stream;

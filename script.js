@@ -17,9 +17,18 @@ let previousDetections = {}; // Track previously detected objects by their uniqu
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 
+// Append canvas after the video element to overlay on top
+video.parentNode.appendChild(canvas);
+canvas.style.position = 'absolute'; // Ensure it's on top of the video
+canvas.style.top = '0';
+canvas.style.left = '0';
+
 async function detectObjects() {
+    // Ensure canvas size matches video size
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
+    // Draw the current frame from the video
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const imageBase64 = canvas.toDataURL("image/jpeg").split(",")[1];
@@ -81,7 +90,7 @@ function drawDetections(detectedObjects) {
 
     detectedObjects.predictions.forEach(item => {
         if (item.confidence >= 0.8) {
-            // Draw bounding box
+            // Draw bounding box around detected object
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.strokeRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
@@ -92,8 +101,6 @@ function drawDetections(detectedObjects) {
             ctx.fillText(`${item.class} (${(item.confidence * 100).toFixed(1)}%)`, item.x - item.width / 2, item.y - item.height / 2 - 5);
         }
     });
-
-    video.parentNode.appendChild(canvas);
 }
 
 checkoutBtn.addEventListener("click", () => {

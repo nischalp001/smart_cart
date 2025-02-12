@@ -6,21 +6,86 @@
     <title>Smart Cart</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; background-color: #b0c4b1; }
-        #video { width: 50%; background: lightgreen; }
-        #cart { margin-top: 20px; }
-        #checkout-container { margin-top: 20px; }
-        button { padding: 10px 20px; background: #7a9e7e; border: none; cursor: pointer; }
+        /* CSS to make the page visually appealing and ensure proper alignment */
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #b0c4b1;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #4e6e3a;
+            margin-top: 20px;
+        }
+
+        /* Video styling */
+        #video {
+            position: relative;
+            width: 80%;
+            background: lightgreen;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* The canvas will overlay on top of the video */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        #cart {
+            margin-top: 20px;
+        }
+
+        #checkout-container {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #7a9e7e;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #5e7b5e;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        #total-price {
+            font-weight: bold;
+            color: #2e8b57;
+        }
     </style>
 </head>
 <body>
+
     <h1>Smart Cart</h1>
     <video id="video" autoplay></video>
+
     <ul id="cart-list"></ul>
-    <h3>Total: <span id="total-price">Rs. 0</span></h3>
+    <h3>Total: Rs. <span id="total-price">0</span></h3>
     <button id="checkout">Check Out</button>
     <div id="checkout-container"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
-    

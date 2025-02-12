@@ -7,6 +7,7 @@ const checkoutContainer = document.getElementById("checkout-container");
 const prices = {
     "Coke": 100,
     "wai wai": 20,
+    "Dettol": 25,
     "Ariel": 150
 };
 
@@ -42,10 +43,7 @@ async function detectObjects() {
 function updateCart(detectedObjects) {
     const currentDetections = {}; // Temporary object to store currently detected objects
 
-    // Reset cart every 5 seconds
-    cart = [];
-
-    // Loop through all detected objects
+    // Only add detected objects to the cart if they are new or not removed from the frame
     detectedObjects.predictions.forEach(item => {
         if (item.confidence >= 0.8 && prices[item.class]) {
             const objKey = `${item.class}_${Math.round(item.x)}_${Math.round(item.y)}`;

@@ -140,7 +140,7 @@ $(function () {
 
                 if (prevTime) {
                     pastFrameTimes.push(Date.now() - prevTime);
-                    if (pastFrameTimes.length > 30) pastFrameTimes.shift();
+                    if (pastFrameTimes.length > 60) pastFrameTimes.shift();
 
                     var total = 0;
                     _.each(pastFrameTimes, function (t) {

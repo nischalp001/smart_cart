@@ -100,6 +100,7 @@ $(function () {
     }
     
 
+
     // Standard non-max suppression
     function nonMaxSuppression(predictions) {
         if (!predictions.length) return [];
@@ -679,4 +680,3 @@ $(function () {
         
     });
 });
-

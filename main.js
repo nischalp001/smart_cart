@@ -18,13 +18,13 @@ $(function () {
         "Ariel": "#2ECC40",   // Green
         "Coke": "#FF4136",    // Red
         "Dettol": "#0074D9",   // Blue
-        "Dettol": "0074D9",   // Blue
         "Harpic": "0074D9",
         "Colin": "0074D9",
         "Oreo": "0074D9",
         "Colgate": "0074D9",
         "Ketchup": "0074D9",
         "Patanjali Dish Soap": "0074D9",
+
     };
     
     const video = document.getElementById('video');
@@ -61,9 +61,9 @@ $(function () {
         try {
             inferEngine = new InferenceEngine();
             workerId = await inferEngine.startWorker(
-                "smart_cart-mio9y",
-                "11",
-                "rf_4ScjoGXqcHcnJB81DlbHzYaZa1H2"
+                "shopping-cart-mmcht",
+                "5",
+                "rf_zUglaEqt57VTuKys33uspdJjBr72"
             );
             console.log('Inference engine initialized with worker ID:', workerId);
             return true;
@@ -106,7 +106,6 @@ $(function () {
         
     }
     
-
 
     // Standard non-max suppression
     function nonMaxSuppression(predictions) {
@@ -457,6 +456,7 @@ $(function () {
                     // Draw color-coded box
                     ctx.strokeStyle = color;
                     ctx.lineWidth = 3;
+                    ctx.strokeRect(x - width / 2, y - height / 2, width, height);
 
                     // Draw label background with product-specific color
                     const confidenceText = (prediction.confidence * 100).toFixed(0) + '%';
@@ -557,7 +557,6 @@ $(function () {
     // Prices for detected items
     const itemPrices = {
         "Coke": 100,
-        "Dettol": 25,
         "Wai Wai": 20,
         "Ariel": 175,
         "Dettol": 25,   // Blue
@@ -567,6 +566,7 @@ $(function () {
         "Colgate": 180,
         "Ketchup": 210,
         "Patanjali Dish Soap": 20,
+
     };
 
     // Handle checkout button click

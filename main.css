@@ -71,17 +71,32 @@ body {
         max-width: 100%;
         max-height: 100vh;
         object-fit: contain;
+        display: block; /* Ensure video is treated as a block element */
     }
-
+    
     /* Canvas overlay */
     #overlay {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100%; /* Match video width */
+        height: 100%; /* Match video height */
         pointer-events: none;
+        z-index: 2; /* Ensure canvas is above the video */
     }
+/* Video and canvas container */
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevent scrolling */
+}
 
 /* Video section */
 .video-section {
@@ -91,23 +106,6 @@ body {
     overflow: hidden;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     height: 100%;
-}
-
-.camera-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.corner {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid var(--primary-color);
 }
 
 .top-left {

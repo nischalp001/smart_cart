@@ -14,10 +14,19 @@ $(function () {
     const minDetectionFrames = 3;
 
     const productColors = {
-        "Wai Wai": "#FFD700",
-        "Ariel": "#2ECC40",
-        "Coke": "#FF4136",
-        "Dettol": "#0074D9"
+        "Wai Wai": "#d4d400",
+        "Ariel": "#19ff00",
+        "Coke": "#ff0f0f",
+        "Dettol": "#009d1b",
+        "Colgate": "#fd21ff",
+        "Oreo": "#004d90",
+        "Colin": "#00ffeb",
+        "Harpic": "#0071fc",
+        "Patanjali Dish Soap": "#8cff00",
+        "Ketchup": "#f98181",
+
+
+
     };
 
     const video = document.getElementById('video');
@@ -52,9 +61,9 @@ $(function () {
         try {
             inferEngine = new InferenceEngine();
             workerId = await inferEngine.startWorker(
-                "shopping-cart-mmcht",
-                "5",
-                "rf_zUglaEqt57VTuKys33uspdJjBr72"
+                "smart_cart-mio9y-7gylq",
+                "1",
+                "rf_DN8H3uI2eigUk7P0QjdfOGGzdjO2"
             );
             console.log('Inference engine initialized with worker ID:', workerId);
             return true;
@@ -488,7 +497,13 @@ $(function () {
         "Coke": 100,
         "Dettol": 25,
         "Wai Wai": 20,
-        "Ariel": 175
+        "Ariel": 540,
+        "Colgate": 200,
+        "Oreo": 25,
+        "Colin": 175,
+        "Harpic": 155,
+        "Patanjali Dish Soap": 20,
+        "Ketchup": 220,
     };
 
     $('#checkoutButton').click(function() {

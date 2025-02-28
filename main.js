@@ -554,7 +554,7 @@ $(function () {
                 max-width: 80%;
             ">
                 <p style="margin: 0 0 5px 0;"><b>How to use:</b> Point camera at products to detect them</p>
-                <p style="margin: 0;">Item locations shown on left sidebar with directional indicators</p>
+                <p style="margin: 0;">Item's prices will be shown on right sidebar</p>
                 <button id="hideInstructions" style="
                     background: #555;
                     border: none;

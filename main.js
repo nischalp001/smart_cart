@@ -14,7 +14,7 @@ $(function () {
     const minDetectionFrames = 3;
 
     const productColors = {
-        "Wai Wai": "#d4d400",
+        "WaiWai": "#d4d400",
         "Ariel": "#19ff00",
         "Coke": "#ff0f0f",
         "Dettol": "#009d1b",
@@ -496,7 +496,7 @@ $(function () {
     const itemPrices = {
         "Coke": 100,
         "Dettol": 25,
-        "Wai Wai": 20,
+        "WaiWai": 20,
         "Ariel": 540,
         "Colgate": 200,
         "Oreo": 25,

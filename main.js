@@ -10,10 +10,22 @@ $(function () {
     const confidenceThreshold = 0.5;
     const minDetectionFrames = 3;
     const productColors = {
-        "Wai Wai": "#FFD700",
+        "WaiWai": "#FFD700",
         "Ariel": "#2ECC40",
         "Coke": "#FF4136",
-        "Dettol": "#0074D9"
+        "Dettol": "#0074D9",
+        "Hajmola Rasilo Candy": "#40100e",
+        "Ariel": "#25852f",
+        "Parachute Coconut Oil": "#0b429c",
+        "Colgate": "#9c0b4c",
+        "Horlicks": "#0b9c6e",
+        "Ketchup": "#800311",
+        "KitKat": "#b0515c",
+        "Oreo": "#0b2d54",
+        "Patanjali Dish Soap": "#23b067",
+        "Colin": "#4c6ad4",
+        "Thai Inhaler": "#128c2d",
+        "Vaseline": "#d2d918"
     };
     
     const video = document.getElementById('video');
@@ -464,9 +476,276 @@ $(function () {
     const itemPrices = {
         "Coke": 100,
         "Dettol": 25,
-        "Wai Wai": 20,
-        "Ariel": 175
+        "WaiWai": 20,
+        "Ariel": 175,
+        "Hajmola Rasilo Candy": 2,
+        "Ariel": 520,
+        "Parachute Coconut Oil": 250,
+        "Colgate": 170,
+        "Horlicks": 280,
+        "Ketchup": 320,
+        "KitKat": 20,
+        "Oreo": 25,
+        "Patanjali Dish Soap": 35,
+        "Colin": 175,
+        "Thai Inhaler": 315,
+        "Vaseline": 205
     };
+    
+    // Function to create a receipt modal
+    function createReceiptModal(items, total) {
+        // Create receipt container
+        const receiptModal = $(`
+            <div id="receiptModal" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            ">
+                <div class="receipt-content" style="
+                    background-color: white;
+                    width: 90%;
+                    max-width: 400px;
+                    border-radius: 8px;
+                    padding: 20px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                ">
+                    <div class="receipt-header" style="
+                        text-align: center;
+                        border-bottom: 2px dashed #ccc;
+                        padding-bottom: 15px;
+                        margin-bottom: 15px;
+                    ">
+                        <h2 style="margin: 0; color: #333;">किराना Cart</h2>
+                        <p style="margin: 5px 0; color: #666;">Receipt</p>
+                        <p style="margin: 5px 0; font-size: 12px; color: #888;">${new Date().toLocaleString()}</p>
+                    </div>
+                    <div class="receipt-items" style="
+                        margin-bottom: 15px;
+                        border-bottom: 1px dashed #ccc;
+                        padding-bottom: 15px;
+                    ">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <th style="text-align: left; padding: 5px 0;">Item</th>
+                                    <th style="text-align: center; padding: 5px 0;">Qty</th>
+                                    <th style="text-align: right; padding: 5px 0;">Price</th>
+                                    <th style="text-align: right; padding: 5px 0;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="receiptItems">
+                                <!-- Items will be added here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="receipt-total" style="
+                        text-align: right;
+                        margin-bottom: 20px;
+                        padding-bottom: 15px;
+                        border-bottom: 2px dashed #ccc;
+                    ">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Subtotal:</span>
+                            <span>Rs. ${total}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Tax (13%):</span>
+                            <span>Rs. ${(total * 0.13).toFixed(2)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em;">
+                            <span>TOTAL:</span>
+                            <span>Rs. ${(total * 1.13).toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <div class="receipt-actions" style="
+                        display: flex;
+                        justify-content: center;
+                    ">
+                        <button id="confirmReceipt" style="
+                            background-color: #4CAF50;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 4px;
+                            font-size: 16px;
+                            cursor: pointer;
+                        ">Confirm & Pay</button>
+                    </div>
+                </div>
+            </div>
+        `);
+        
+        // Add receipt items
+        const receiptItemsContainer = receiptModal.find("#receiptItems");
+        
+        Object.entries(items).forEach(([item, count]) => {
+            const price = itemPrices[item];
+            const subtotal = price * count;
+            
+            receiptItemsContainer.append(`
+                <tr style="border-bottom: 1px solid #f8f8f8;">
+                    <td style="padding: 8px 0;">${item}</td>
+                    <td style="text-align: center; padding: 8px 0;">${count}</td>
+                    <td style="text-align: right; padding: 8px 0;">Rs. ${price}</td>
+                    <td style="text-align: right; padding: 8px 0;">Rs. ${subtotal}</td>
+                </tr>
+            `);
+        });
+        
+        // Append to body
+        $("body").append(receiptModal);
+        
+        // Return the modal element
+        return receiptModal;
+    }
+    
+    // Function to generate a QR code for payment
+    function showQRCodeScreen(amount) {
+        // Create a transaction ID
+        const transactionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const timestamp = new Date().toISOString();
+        const paymentData = {
+            amount: amount.toFixed(2),
+            transactionId: transactionId,
+            timestamp: timestamp,
+            store: "Smart Cart Demo"
+        };
+        
+        // Create payment QR code screen
+        const qrScreen = $(`
+            <div id="qrCodeScreen" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                text-align: center;
+            ">
+                <h2 style="margin: 0 0 20px 0; color: #333;">Scan to Pay</h2>
+                <p style="margin: 0 0 30px 0; color: #666;">Amount: Rs. ${amount.toFixed(2)}</p>
+                <div id="qrcode" style="
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    margin-bottom: 30px;
+                ">
+                    <!-- SVG QR Code placeholder with example data -->
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="200" height="200" viewBox="0 0 200 200">
+                        <rect x="0" y="0" width="200" height="200" fill="#FFFFFF" />
+                        <g transform="scale(4)">
+                            <!-- Simple placeholder QR pattern -->
+                            <rect x="0" y="0" width="50" height="50" fill="#FFFFFF" />
+                            <!-- QR code corner squares -->
+                            <rect x="0" y="0" width="7" height="7" fill="#000000" />
+                            <rect x="1" y="1" width="5" height="5" fill="#FFFFFF" />
+                            <rect x="2" y="2" width="3" height="3" fill="#000000" />
+                            
+                            <rect x="43" y="0" width="7" height="7" fill="#000000" />
+                            <rect x="44" y="1" width="5" height="5" fill="#FFFFFF" />
+                            <rect x="45" y="2" width="3" height="3" fill="#000000" />
+                            
+                            <rect x="0" y="43" width="7" height="7" fill="#000000" />
+                            <rect x="1" y="44" width="5" height="5" fill="#FFFFFF" />
+                            <rect x="2" y="45" width="3" height="3" fill="#000000" />
+                            
+                            <!-- Random QR code bits for visual effect -->
+                            <rect x="10" y="10" width="2" height="2" fill="#000000" />
+                            <rect x="14" y="10" width="2" height="2" fill="#000000" />
+                            <rect x="18" y="12" width="2" height="2" fill="#000000" />
+                            <rect x="22" y="8" width="2" height="2" fill="#000000" />
+                            <rect x="26" y="15" width="2" height="2" fill="#000000" />
+                            <rect x="30" y="20" width="2" height="2" fill="#000000" />
+                            <rect x="34" y="25" width="2" height="2" fill="#000000" />
+                            <rect x="38" y="30" width="2" height="2" fill="#000000" />
+                            <rect x="10" y="35" width="2" height="2" fill="#000000" />
+                            <rect x="15" y="40" width="2" height="2" fill="#000000" />
+                            <rect x="20" y="30" width="2" height="2" fill="#000000" />
+                            <rect x="25" y="25" width="2" height="2" fill="#000000" />
+                            <rect x="30" y="35" width="2" height="2" fill="#000000" />
+                        </g>
+                    </svg>
+                </div>
+                <p style="margin: 0 0 10px 0; color: #888;">Transaction ID: ${transactionId}</p>
+                <button id="completePayment" style="
+                    background-color: #4CAF50;
+                    color: white;
+                    border: none;
+                    padding: 10px 25px;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    margin-top: 20px;
+                ">Complete Payment</button>
+            </div>
+        `);
+        
+        // Append to body
+        $("body").append(qrScreen);
+        
+        // Add event listener for payment completion
+        qrScreen.find("#completePayment").click(function() {
+            qrScreen.fadeOut(300, function() {
+                qrScreen.remove();
+                
+                // Show thank you message
+                const thankYouScreen = $(`
+                    <div style="
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: white;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 3000;
+                        text-align: center;
+                    ">
+                        <h1 style="color: #4CAF50; margin-bottom: 20px;">Thank You!</h1>
+                        <p style="font-size: 18px; margin-bottom: 30px;">Your payment has been processed successfully.</p>
+                        <div style="margin-bottom: 30px;">
+                            <svg width="80" height="80" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="11" fill="#4CAF50" stroke="none"/>
+                                <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <p style="color: #666; margin-bottom: 30px;">Receipt has been sent to your email.</p>
+                        <button id="returnToShopping" style="
+                            background-color: #2196F3;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 4px;
+                            font-size: 16px;
+                            cursor: pointer;
+                        ">Return to Shopping</button>
+                    </div>
+                `);
+                
+                $("body").append(thankYouScreen);
+                
+                thankYouScreen.find("#returnToShopping").click(function() {
+                    window.location.reload();
+                });
+            });
+        });
+    }
     
     $('#checkoutButton').click(function() {
         if (Object.keys(detectedItems).length === 0) {
@@ -484,10 +763,21 @@ $(function () {
             total += itemPrices[item] * detectedItems[item];
         }
         
+        // Show the receipt modal instead of alert
         setTimeout(() => {
-            alert(`Checkout completed! Total: Rs. ${total}`);
-            window.location.href = "My_Gallery.png";
-        }, 2000);
+            // Create and show receipt
+            const receiptModal = createReceiptModal(detectedItems, total);
+            
+            // Add event listener for receipt confirmation
+            receiptModal.find("#confirmReceipt").click(function() {
+                // Hide receipt modal
+                receiptModal.fadeOut(300, function() {
+                    receiptModal.remove();
+                    // Show QR code for payment
+                    showQRCodeScreen(total * 1.13); // Total with tax
+                });
+            });
+        }, 1000);
     });
     
     function createStatusIndicator() {
@@ -533,6 +823,46 @@ $(function () {
         });
     }
     
+    // Add styling for the receipt
+    function addReceiptStyles() {
+        const receiptStyles = $(`
+            <style>
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    #receiptModal, #receiptModal * {
+                        visibility: visible;
+                    }
+                    #receiptModal {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                    }
+                    #receiptModal .receipt-actions {
+                        display: none !important;
+                    }
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                #receiptModal .receipt-content {
+                    animation: fadeIn 0.5s ease-out;
+                }
+                
+                #qrCodeScreen {
+                    animation: fadeIn 0.5s ease-out;
+                }
+            </style>
+        `);
+        
+        $("head").append(receiptStyles);
+    }
+    
     // Test connection to API server
     async function testApiConnection() {
         try {
@@ -550,6 +880,8 @@ $(function () {
     async function initialize() {
         const statusIndicator = createStatusIndicator();
         
+        // Add receipt styles
+        addReceiptStyles();
         
         try {
             statusIndicator.text("Initializing camera...");
